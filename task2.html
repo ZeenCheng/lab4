@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profiles</title>
+</head>
+<body>
+    <h1>User Profiles</h1>
+    <div id="profiles"></div>
+    
+    <script>
+        fetch('userProfiles.json')
+            .then(response => {
+                if (!response.ok) 
+                    throw new Error('Fetch error: ' + response.status);
+                else 
+                    return response.json();
+            })
+            .then(json => {
+                let output = '';
+                json.forEach(user => {
+                    output += `<h2>${user.firstname} ${user.lastname}</h2>`;
+                    output += `<p>Email: ${user.email}</p>`;
+                    output += `<p>Date of Birth: ${user.dateOfBirth}</p>`;
+                    output += `<p>Address: ${user.address.street}, ${user.address.city}, ${user.address.state}, ${user.address.zipCode}</p>`;
+                    output += `<p>Theme: ${user.preferences.theme}</p>`;
+                    output += `<p>Language: ${user.preferences.language}</p>`;
+                    output += `<p>Notifications: ${user.preferences.notifications}</p>`;
+                    output += `<p>Subscribed: ${user.preferences.subscribed}</p>`;
+                });
+                document.getElementById('profiles').innerHTML = output;
+            })
+            .catch(err => console.error('Fetch error: ' + err.message));
+    </script>
+</body>
+</html>
